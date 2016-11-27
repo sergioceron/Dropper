@@ -249,7 +249,7 @@ open class Dropper: UIView {
     - parameter options: Position of the dropdown corresponding of the button
     - parameter button:  Button to which the dropdown will be aligned to
     */
-    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: Position = .bottom, button: UIView) {
+    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: CGRect, button: UIView) {
         if (self.isHidden) {
             refresh()
             height = self.TableMenu.frame.height
