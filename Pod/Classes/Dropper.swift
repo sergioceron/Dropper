@@ -215,7 +215,7 @@ open class Dropper: UIView {
     - parameter position: Horizontal alignment of the dropdown. Defaults to bottom.
     - parameter button:   Button to which the dropdown will be aligned to
     */
-    open func show(_ options: Alignment, position: Position = .bottom, button: UIButton) {
+    open func show(_ options: Alignment, position: Position = .bottom, button: UIView) {
         refreshHeight()
     
         switch options { // Aligns the view vertically to the button
@@ -257,7 +257,7 @@ open class Dropper: UIView {
     - parameter options: Position of the dropdown corresponding of the button
     - parameter button:  Button to which the dropdown will be aligned to
     */
-    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: Position = .bottom, button: UIButton) {
+    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: Position = .bottom, button: UIView) {
         if (self.isHidden) {
             refresh()
             height = self.TableMenu.frame.height
@@ -322,9 +322,9 @@ open class Dropper: UIView {
     
     - returns: Found button or nil
     */
-    fileprivate func findButtonFromSubviews(_ subviews: [UIView], button: UIButton) -> UIView? {
+    fileprivate func findButtonFromSubviews(_ subviews: [UIView], button: UIView) -> UIView? {
         for subview in subviews {
-            if (subview is UIButton && subview == button) {
+            if (subview is UIView && subview == button) {
                 return button
             }
         }
