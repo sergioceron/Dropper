@@ -223,8 +223,8 @@ open class Dropper: UIView {
         case .bottom:
             self.frame.origin.y = button.frame.origin.y + button.frame.height + spacing
         }*/
-        self.frame.origin.x = position.minX
-        self.frame.origin.y = position.minY
+        self.frame.origin.x = button.bounds.minX + position.minX
+        self.frame.origin.y = button.bounds.minY + position.minY
     
         if (!self.isHidden) {
             self.addSubview(TableMenu)
