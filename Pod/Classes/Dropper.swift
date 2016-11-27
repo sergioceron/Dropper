@@ -24,16 +24,6 @@ open class Dropper: UIView {
     }
     
     /**
-     Position of the dropdown, relative to the top or bottom of the button
-     
-     - Top:    Displayed on the top of the dropdown
-     - Bottom: Displayed on bottom of the dropdown
-     */
-    public enum Position {
-        case top, bottom
-    }
-    
-    /**
     The current status of the dropdowns state
     
     - Displayed: The dropdown is visible on screen
@@ -215,24 +205,26 @@ open class Dropper: UIView {
     - parameter position: Horizontal alignment of the dropdown. Defaults to bottom.
     - parameter button:   Button to which the dropdown will be aligned to
     */
-    open func show(_ options: Alignment, position: Position = .bottom, button: UIView) {
+    open func show(_ options: Alignment, position: CGRect, button: UIView) {
         refreshHeight()
     
-        switch options { // Aligns the view vertically to the button
+        /*switch options { // Aligns the view vertically to the button
         case .left:
             self.frame.origin.x = button.frame.origin.x
         case .right:
             self.frame.origin.x = button.frame.origin.x + button.frame.width
         case .center:
             self.frame.origin.x = button.frame.origin.x + (button.frame.width - self.frame.width)/2
-        }
+        }*/
         
-        switch position { // Aligns the view Horizontally to the button
+        /*switch position { // Aligns the view Horizontally to the button
         case .top:
             self.frame.origin.y = button.frame.origin.y - height - spacing
         case .bottom:
             self.frame.origin.y = button.frame.origin.y + button.frame.height + spacing
-        }
+        }*/
+        self.frame.origin.x = position.minX
+        self.frame.origin.y = position.minY
     
         if (!self.isHidden) {
             self.addSubview(TableMenu)
