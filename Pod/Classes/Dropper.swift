@@ -382,37 +382,38 @@ extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsion
             cell.imageItem.removeFromSuperview()
             cell.textItem.removeFromSuperview()
             cell.layer.addSublayer(createTriangleShapeLayer())
-        }
-        
-        // Sets up Cell
-        // Removes image and text just in case the cell still contains the view
-        cell.imageItem.removeFromSuperview()
-        cell.textItem.removeFromSuperview()
-        cell.last = items.count  // Sets the last item to the cell - 1
-        cell.indexPath = indexPath // Sets index path to the cell
-        cell.borderColor = border.color // Sets the border color for the seperator
-        cell.selectionStyle = .gray
-        let item = items[(indexPath as NSIndexPath).row - 1]
-        
-        if let color = cellBackgroundColor {
-            cell.backgroundColor = color
-        }
-        
-        if let color = cellColor {
-            cell.textItem.textColor = color
-            cell.imageItem.tintColor = color
-        }
-        
-        if let size = cellTextSize {
-            cell.textItem.font = UIFont.systemFont(ofSize: size)
-        }
-        
-        if let image = toImage(item) { // Determines if item is an image or not
-            cell.cellType = .icon
-            cell.imageItem.image = image
         } else {
-            cell.cellType = .text
-            cell.textItem.text = item
+            
+            // Sets up Cell
+            // Removes image and text just in case the cell still contains the view
+            cell.imageItem.removeFromSuperview()
+            cell.textItem.removeFromSuperview()
+            cell.last = items.count  // Sets the last item to the cell - 1
+            cell.indexPath = indexPath // Sets index path to the cell
+            cell.borderColor = border.color // Sets the border color for the seperator
+            cell.selectionStyle = .gray
+            let item = items[(indexPath as NSIndexPath).row - 1]
+            
+            if let color = cellBackgroundColor {
+                cell.backgroundColor = color
+            }
+            
+            if let color = cellColor {
+                cell.textItem.textColor = color
+                cell.imageItem.tintColor = color
+            }
+            
+            if let size = cellTextSize {
+                cell.textItem.font = UIFont.systemFont(ofSize: size)
+            }
+            
+            if let image = toImage(item) { // Determines if item is an image or not
+                cell.cellType = .icon
+                cell.imageItem.image = image
+            } else {
+                cell.cellType = .text
+                cell.textItem.text = item
+            }
         }
         
         return cell
