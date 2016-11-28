@@ -382,6 +382,8 @@ extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsion
             cell.imageItem.removeFromSuperview()
             cell.textItem.removeFromSuperview()
             cell.layer.insertSublayer(createTriangleShapeLayer(), at: 0)
+            cell.backgroundColor = UIColor.clear
+            //cell.textLabel?.textColor = UIColor(red:0, green:0.102, blue: 0.2, alpha: 1)
         } else {
             
             // Sets up Cell
