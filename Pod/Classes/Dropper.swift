@@ -23,6 +23,10 @@ open class Dropper: UIView {
         case left, center, right
     }
     
+    public enum Direction {
+        case left, right, top, bottom
+    }
+    
     /**
     The current status of the dropdowns state
     
@@ -54,6 +58,7 @@ open class Dropper: UIView {
     open var cellBackgroundColor: UIColor? /// Sets the cell background color
     open var cellColor: UIColor? /// Sets the cell tint color and text color
     open var cellTextSize: CGFloat? /// Sets the size of the text to provided value
+    open var direction : Direction = .bottom
     
     // MARK: - Public Computed Properties
     /// The items to be dispalyed in the tableview
@@ -158,6 +163,7 @@ open class Dropper: UIView {
         // Styling
         TableMenu.backgroundColor = UIColor.lightGray
         TableMenu.separatorStyle = UITableViewCellSeparatorStyle.none
+        
         TableMenu.bounces = false
         if (trimCorners) {
             TableMenu.layer.cornerRadius = 9.0
@@ -325,16 +331,69 @@ open class Dropper: UIView {
 }
 
 extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsions {
+    
+    fileprivate func createTriangleShapeLayer() -> CAShapeLayer {
+        
+        let trianglePath = UIBezierPath()
+        
+        switch self.direction {
+        case .left:
+            trianglePath.move(to: CGPoint(x: 0, y: 12))
+            trianglePath.addLine(to: CGPoint(x: 7, y: 6))
+            trianglePath.addLine(to: CGPoint(x: 0, y: 0))
+            trianglePath.addLine(to: CGPoint(x: 0, y: 12))
+            break
+            
+        case .right:
+            trianglePath.move(to: CGPoint(x: 7, y: 12))
+            trianglePath.addLine(to: CGPoint(x: 0, y: 6))
+            trianglePath.addLine(to: CGPoint(x: 7, y: 0))
+            trianglePath.addLine(to: CGPoint(x: 7, y: 12))
+            break
+            
+        case .bottom:
+            trianglePath.move(to: CGPoint(x: 0, y: 7))
+            trianglePath.addLine(to: CGPoint(x: 12, y: 7))
+            trianglePath.addLine(to: CGPoint(x: 6, y: 0))
+            trianglePath.addLine(to: CGPoint(x: 0, y: 7))
+            break
+            
+        case .top:
+            trianglePath.move(to: CGPoint(x: 0, y: 0))
+            trianglePath.addLine(to: CGPoint(x: 12, y: 0))
+            trianglePath.addLine(to: CGPoint(x: 6, y: 7))
+            trianglePath.addLine(to: CGPoint(x: 0, y: 0))
+            break
+        }
+        
+        trianglePath.close()
+        
+        let triangleShapeLayer = CAShapeLayer()
+        triangleShapeLayer.bounds = trianglePath.bounds
+        triangleShapeLayer.path = trianglePath.cgPath
+        triangleShapeLayer.fillColor = self.backgroundColor!.cgColor
+        
+        return triangleShapeLayer
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! DropperCell
+        
+        if indexPath.row == 0 {
+            cell.imageItem.removeFromSuperview()
+            cell.textItem.removeFromSuperview()
+            cell.layer.addSublayer(createTriangleShapeLayer())
+        }
+        
         // Sets up Cell
         // Removes image and text just in case the cell still contains the view
         cell.imageItem.removeFromSuperview()
         cell.textItem.removeFromSuperview()
-        cell.last = items.count - 1  // Sets the last item to the cell
+        cell.last = items.count  // Sets the last item to the cell - 1
         cell.indexPath = indexPath // Sets index path to the cell
         cell.borderColor = border.color // Sets the border color for the seperator
-        let item = items[(indexPath as NSIndexPath).row]
+        cell.selectionStyle = .gray
+        let item = items[(indexPath as NSIndexPath).row - 1]
         
         if let color = cellBackgroundColor {
             cell.backgroundColor = color
@@ -361,7 +420,7 @@ extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsion
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return items.count+1
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
