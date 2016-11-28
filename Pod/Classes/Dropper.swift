@@ -381,7 +381,7 @@ extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsion
         if indexPath.row == 0 {
             cell.imageItem.removeFromSuperview()
             cell.textItem.removeFromSuperview()
-            cell.layer.addSublayer(createTriangleShapeLayer())
+            cell.layer.insertSublayer(createTriangleShapeLayer(), at: 0)
         } else {
             
             // Sets up Cell
