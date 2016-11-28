@@ -11,13 +11,13 @@ import UIKit
 open class Dropper: UIView {
     open let TableMenu: UITableView = UITableView()
     /**
-    Alignment of the dropdown menu compared to the button
+    Alignment of the dropdown menu compared to the view
     
-    - Left: Dropdown is aligned to the left side the corresponding button
+    - Left: Dropdown is aligned to the left side the corresponding view
     
-    - Center: Dropdown is aligned to the center of the corresponding button
+    - Center: Dropdown is aligned to the center of the corresponding view
     
-    - Right: Dropdown is aligned to the right of the corresponding button
+    - Right: Dropdown is aligned to the right of the corresponding view
     */
     public enum Alignment {
         case left, center, right
@@ -53,12 +53,12 @@ open class Dropper: UIView {
     open var defaultAnimationTime: TimeInterval = 0.1 /// The default time for animations to take
     open var delegate: DropperDelegate? /// Delegate Property
     open var status: Status = .hidden /// The current state of the view
-    open var spacing: CGFloat = 10 /// The distance from the button to the dropdown
+    open var spacing: CGFloat = 10 /// The distance from the view to the dropdown
     open var maxHeight: CGFloat? /// The maximum possible height of the dropdown
     open var cellBackgroundColor: UIColor? /// Sets the cell background color
     open var cellColor: UIColor? /// Sets the cell tint color and text color
     open var cellTextSize: CGFloat? /// Sets the size of the text to provided value
-    open var direction : Direction = .bottom
+    open var direction : Direction = .top
     
     // MARK: - Public Computed Properties
     /// The items to be dispalyed in the tableview
@@ -199,43 +199,43 @@ open class Dropper: UIView {
     /**
     Displays the dropdown
     
-    - parameter options: Position of the dropdown corresponding of the button
-    - parameter button: Button to which the dropdown will be aligned to
+    - parameter options: Position of the dropdown corresponding of the view
+    - parameter view: view to which the dropdown will be aligned to
     
     */
     
     /**
     Displays the dropdown
     
-    - parameter options:  Vertical alignment of the dropdown corresponding of the button
+    - parameter options:  Vertical alignment of the dropdown corresponding of the view
     - parameter position: Horizontal alignment of the dropdown. Defaults to bottom.
-    - parameter button:   Button to which the dropdown will be aligned to
+    - parameter view:   view to which the dropdown will be aligned to
     */
-    open func show(_ options: Alignment, position: CGRect, button: UIView) {
+    open func show(_ options: Alignment, position: CGRect, view: UIView) {
         refreshHeight()
     
-        /*switch options { // Aligns the view vertically to the button
+        /*switch options { // Aligns the view vertically to the view
         case .left:
-            self.frame.origin.x = button.frame.origin.x
+            self.frame.origin.x = view.frame.origin.x
         case .right:
-            self.frame.origin.x = button.frame.origin.x + button.frame.width
+            self.frame.origin.x = view.frame.origin.x + view.frame.width
         case .center:
-            self.frame.origin.x = button.frame.origin.x + (button.frame.width - self.frame.width)/2
+            self.frame.origin.x = view.frame.origin.x + (view.frame.width - self.frame.width)/2
         }*/
         
-        /*switch position { // Aligns the view Horizontally to the button
+        /*switch position { // Aligns the view Horizontally to the view
         case .top:
-            self.frame.origin.y = button.frame.origin.y - height - spacing
+            self.frame.origin.y = view.frame.origin.y - height - spacing
         case .bottom:
-            self.frame.origin.y = button.frame.origin.y + button.frame.height + spacing
+            self.frame.origin.y = view.frame.origin.y + view.frame.height + spacing
         }*/
-        self.frame.origin.x = button.frame.origin.x + position.minX
-        self.frame.origin.y = button.frame.origin.y + position.minY
+        self.frame.origin.x = view.frame.origin.x + position.minX
+        self.frame.origin.y = view.frame.origin.y + position.minY
     
         if (!self.isHidden) {
             self.addSubview(TableMenu)
-            if let buttonRoot = findButtonFromSubviews((button.superview?.subviews)!, button: button) {
-                buttonRoot.superview?.addSubview(self)
+            if let viewRoot = findviewFromSubviews((view.superview?.subviews)!, view: view) {
+                viewRoot.superview?.addSubview(self)
             } else {
                 if let rootView = root {
                     rootView.addSubview(self)
@@ -252,17 +252,17 @@ open class Dropper: UIView {
     Displays the dropdown with fade in type of aniamtion
     
     - parameter time:    Time taken for the fade animation
-    - parameter options: Position of the dropdown corresponding of the button
-    - parameter button:  Button to which the dropdown will be aligned to
+    - parameter options: Position of the dropdown corresponding of the view
+    - parameter view:  view to which the dropdown will be aligned to
     */
-    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: CGRect, button: UIView) {
+    open func showWithAnimation(_ time: TimeInterval, options: Alignment, position: CGRect, view: UIView) {
         if (self.isHidden) {
             refresh()
             height = self.TableMenu.frame.height
         }
         
         self.TableMenu.alpha = 0.0
-        self.show(options, position:  position, button: button)
+        self.show(options, position:  position, view: view)
         UIView.animate(withDuration: time, animations: {
             self.TableMenu.alpha = 1.0
         })
@@ -313,17 +313,17 @@ open class Dropper: UIView {
     }
     
     /**
-    Find corresponding button to which the dropdown is aligned too
+    Find corresponding view to which the dropdown is aligned too
     
-    - parameter subviews: All subviews of where the button is.
-    - parameter button: Button to find
+    - parameter subviews: All subviews of where the view is.
+    - parameter view: view to find
     
-    - returns: Found button or nil
+    - returns: Found view or nil
     */
-    fileprivate func findButtonFromSubviews(_ subviews: [UIView], button: UIView) -> UIView? {
+    fileprivate func findviewFromSubviews(_ subviews: [UIView], view: UIView) -> UIView? {
         for subview in subviews {
-            if (subview is UIView && subview == button) {
-                return button
+            if subview == view {
+                return view
             }
         }
         return nil
