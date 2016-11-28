@@ -371,8 +371,7 @@ extension Dropper: UITableViewDelegate, UITableViewDataSource, DropperExtentsion
         let triangleShapeLayer = CAShapeLayer()
         triangleShapeLayer.bounds = trianglePath.bounds
         triangleShapeLayer.path = trianglePath.cgPath
-        triangleShapeLayer.fillColor = self.backgroundColor!.cgColor
-        
+        triangleShapeLayer.fillColor = UIColor.black
         return triangleShapeLayer
     }
     
